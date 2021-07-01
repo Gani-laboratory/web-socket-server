@@ -22,7 +22,8 @@ io.on("connection", (socket: Socket) => {
   })
   
   socket.on("sendMsg", (data) => {
-    socket.emit("receiveMsg", data)
+    // socket.emit("receiveMsg", data)
+    socket.broadcast.emit("receiveMsg", data)
   })
 });
 
