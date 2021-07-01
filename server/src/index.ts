@@ -11,9 +11,15 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket: Socket) => {
   console.log("New client has been connected")
-  socket.on("join", (data) => {
+  socket.on("newClient", (data) => {
     console.log(data);
   })
+
+  socket.join("group")
+  socket.on("sendGlobalMsg", (data) => {
+    io.to("group").emit("broadcast", data)
+  })
+  
   socket.on("sendMsg", (data) => {
     socket.emit("receiveMsg", data)
   })

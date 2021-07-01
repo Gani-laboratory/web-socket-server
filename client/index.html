@@ -9,36 +9,60 @@
 <body>
     <h1>Hello web socket!</h1>
 
-    <form>
-        <input type="text" id="msg">
+    <form id="satu">
+        <input type="text" id="msg1">
         <button type="submit">Send</button>
 
-        <ul>
+        <ul id="listmsg">
             <li>List message:</li>
+        </ul>
+    </form>
+
+    <form id="dua">
+        <input type="text" id="msg2">
+        <button type="submit">Send</button>
+
+        <ul id="global">
+            <li>List global message:</li>
         </ul>
     </form>
 
     <script src="client-dist/socket.io.js"></script>
     <script>
-        const form = document.querySelector("form");
-        const list = document.querySelector("ul");
+        const form1 = document.querySelector("form#satu");
+        const form2 = document.querySelector("form#dua");
+        const list = document.querySelector("ul#listmsg");
+        const globalList = document.querySelector("ul#global");
 
         const socket = io.connect("http://localhost:3000")
         socket.on("connect", () => {
-            socket.emit("join", "Hello World from client, handshake successfully");
+            socket.emit("newClient", "Hello World from client, handshake successfully");
             socket.on("receiveMsg", (msg) => {
                 const node = document.createElement("li")
                 const textnode = document.createTextNode(msg)
                 node.appendChild(textnode)
                 list.appendChild(node)
             })
+            socket.on("broadcast", (msg) => {
+                const node = document.createElement("li")
+                const textnode = document.createTextNode(msg)
+                node.appendChild(textnode)
+                globalList.appendChild(node)
+            })
             const sendMessage = (event) => {
                 event.preventDefault();
-                const msg = document.getElementById("msg").value
+                const msg = document.getElementById("msg1").value
                 socket.emit("sendMsg", msg)
-                form.reset()
+                form1.reset()
             }
-            form.addEventListener("submit", sendMessage);
+            const sendGlobalMessage = (event) => {
+                event.preventDefault();
+                const msg = document.getElementById("msg2").value
+                socket.emit("sendGlobalMsg", msg)
+                form2.reset()
+            }
+            form1.addEventListener("submit", sendMessage);
+            form2.addEventListener("submit", sendGlobalMessage);
         });
     </script>
 </body>
