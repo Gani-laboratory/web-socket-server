@@ -22,8 +22,8 @@
         <input type="text" id="msg2">
         <button type="submit">Send</button>
 
-        <ul id="global">
-            <li>List global message:</li>
+        <ul id="group">
+            <li>List group message:</li>
         </ul>
     </form>
 
@@ -32,7 +32,7 @@
         const form1 = document.querySelector("form#satu");
         const form2 = document.querySelector("form#dua");
         const list = document.querySelector("ul#listmsg");
-        const globalList = document.querySelector("ul#global");
+        const groupList = document.querySelector("ul#group");
 
         const socket = io.connect("http://localhost:3000")
         socket.on("connect", () => {
@@ -47,7 +47,7 @@
                 const node = document.createElement("li")
                 const textnode = document.createTextNode(msg)
                 node.appendChild(textnode)
-                globalList.appendChild(node)
+                groupList.appendChild(node)
             })
             const sendMessage = (event) => {
                 event.preventDefault();
@@ -55,14 +55,14 @@
                 socket.emit("sendMsg", msg)
                 form1.reset()
             }
-            const sendGlobalMessage = (event) => {
+            const sendGroupMessage = (event) => {
                 event.preventDefault();
                 const msg = document.getElementById("msg2").value
-                socket.emit("sendGlobalMsg", msg)
+                socket.emit("sendGroupMsg", msg)
                 form2.reset()
             }
             form1.addEventListener("submit", sendMessage);
-            form2.addEventListener("submit", sendGlobalMessage);
+            form2.addEventListener("submit", sendGroupMessage);
         });
     </script>
 </body>

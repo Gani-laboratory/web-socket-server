@@ -17,7 +17,7 @@ io.on("connection", (socket: Socket) => {
   })
 
   socket.join("group")
-  socket.on("sendGlobalMsg", (data) => {
+  socket.on("sendGroupMsg", (data) => {
     io.to("group").emit("broadcast", data)
   })
   
