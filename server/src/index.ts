@@ -2,6 +2,7 @@ import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 
 const httpServer = createServer();
+const PORT = 3000;
 
 const io = new Server(httpServer, {
   cors: {
@@ -25,4 +26,6 @@ io.on("connection", (socket: Socket) => {
   })
 });
 
-httpServer.listen(3000);
+httpServer.listen(PORT, () => {
+  console.info(`Web socket running on port ${PORT}`)
+});
