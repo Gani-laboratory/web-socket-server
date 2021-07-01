@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try socket io</title>
+</head>
+<body>
+    <h1>Hello web socket!</h1>
+
+    <form>
+        <input type="text" id="msg">
+        <button type="submit">Send</button>
+
+        <ul>
+            <li>List message:</li>
+        </ul>
+    </form>
+
+    <script src="client-dist/socket.io.js"></script>
+    <script>
+        const form = document.querySelector("form");
+        const list = document.querySelector("ul");
+
+        const socket = io.connect("http://localhost:3000")
+        socket.on("connect", () => {
+            socket.emit("join", "Hello World from client, handshake successfully");
+            socket.on("receiveMsg", (msg) => {
+                const node = document.createElement("li")
+                const textnode = document.createTextNode(msg)
+                node.appendChild(textnode)
+                list.appendChild(node)
+            })
+            const sendMessage = (event) => {
+                event.preventDefault();
+                const msg = document.getElementById("msg").value
+                socket.emit("sendMsg", msg)
+                form.reset()
+            }
+            form.addEventListener("submit", sendMessage);
+        });
+    </script>
+</body>
+</html>
