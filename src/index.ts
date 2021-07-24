@@ -11,7 +11,7 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
 
-app.use(ioMiddleware(io), router)
+app.use("/socket", ioMiddleware(io), router)
 
 server.listen(process.env.PORT, () => {
   console.log(`server listening on http://localhost:${process.env.PORT}`)
