@@ -1,9 +1,8 @@
 import { Router } from "express"
+import chat from "./chat.controller"
 
 const router = Router()
 
-router.get("/", (req, res) => {
-  res.send("hello world")
-})
+router.use("/chat", chat)
 
 export default router
