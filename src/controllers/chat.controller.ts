@@ -1,6 +1,5 @@
 import { Router } from "express"
 import { Server } from "socket.io"
-import { IRequest } from "../interfaces/req.interface"
 
 const router = Router()
 
@@ -12,7 +11,9 @@ router.get("/", (req, res) => {
 export const chatNsp = (Server: Server) => {
   const chatNsp = Server.of("/chat")
   chatNsp.on("connection", (socket) => {
-    socket.emit("hello", "hello from /chat!")
+    socket.on("send", (args) => {
+      socket.emit("receive", args)
+    })
   })
   return "chat"
 }

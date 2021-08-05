@@ -15,7 +15,7 @@ const io = new Server(server, {
   },
 })
 
-socketNsp(io).map((val) => console.log(`namespace ${val} has been registered`))
+socketNsp(io).map((name) => console.log(`namespace ${name} has been registered`))
 app.use("/socket", ioMiddleware(io), router)
 
 server.listen(process.env.PORT, () => {
