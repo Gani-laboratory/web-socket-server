@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { Server } from "socket.io"
+import { ChatParam } from "../interfaces/chat.interface"
 
 const router = Router()
 
@@ -11,7 +12,7 @@ router.get("/", (req, res) => {
 export const chatNsp = (Server: Server) => {
   const chatNsp = Server.of("/chat")
   chatNsp.on("connection", (socket) => {
-    socket.on("send", (args) => {
+    socket.on("send", (args: ChatParam) => {
       socket.emit("receive", args)
     })
   })
