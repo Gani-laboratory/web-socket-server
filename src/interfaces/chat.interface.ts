@@ -1,4 +1,4 @@
-export interface ChatParam {
-  id: string
-  message: string
+export interface Recipients {
+    recipients: string[],
+    text: string
 }

@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { Server } from "socket.io"
-import { ChatParam } from "../interfaces/chat.interface"
+import { Recipients } from "../interfaces/chat.interface"
 
 const router = Router()
 
@@ -12,8 +12,16 @@ router.get("/", (req, res) => {
 export const chatNsp = (Server: Server) => {
   const chatNsp = Server.of("/chat")
   chatNsp.on("connection", (socket) => {
-    socket.on("send", (args: ChatParam) => {
-      socket.emit("receive", args)
+    const id = socket.handshake.query.id
+    socket.join(id!)
+    socket.on('send', ({ recipients, text }: Recipients) => {
+      recipients.forEach((recipient) => {
+        const newRecipients = recipients.filter((r) => r !== recipient)
+        newRecipients.push(id! as string)
+        socket.broadcast.to(recipient).emit('receive', {
+          recipients: newRecipients, sender: id, text
+        })
+      })
     })
   })
   return "chat"
