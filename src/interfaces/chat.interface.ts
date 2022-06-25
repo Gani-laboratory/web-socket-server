@@ -1,4 +1,5 @@
 export interface Recipients {
-    recipients: string[],
-    text: string
+  recipients: string[]
+  text: string
+  username: string
 }
