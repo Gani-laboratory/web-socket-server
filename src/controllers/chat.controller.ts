@@ -14,12 +14,15 @@ export const chatNsp = (Server: Server) => {
   chatNsp.on("connection", (socket) => {
     const id = socket.handshake.query.id
     socket.join(id!)
-    socket.on('send', ({ recipients, text }: Recipients) => {
+    socket.on("send", ({ recipients, text, username }: Recipients) => {
       recipients.forEach((recipient) => {
         const newRecipients = recipients.filter((r) => r !== recipient)
         newRecipients.push(id! as string)
-        socket.broadcast.to(recipient).emit('receive', {
-          recipients: newRecipients, sender: id, text
+        socket.broadcast.to(recipient).emit("receive", {
+          recipients: newRecipients,
+          sender: id,
+          text,
+          username,
         })
       })
     })
